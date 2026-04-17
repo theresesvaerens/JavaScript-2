@@ -22,6 +22,9 @@ body {
   border-bottom: 1px solid #eaeaea;
 }
 
+.navbar.hidden {
+  display: none;
+}
 
 .nav-brand {
   display: flex;
@@ -100,6 +103,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
 }
 
 .modal-overlay {
