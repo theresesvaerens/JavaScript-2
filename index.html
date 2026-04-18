@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SocialHub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
-        <div id="app">
+    <div id="app">
       <nav id="navbar" class="navbar hidden">
         <div class="nav-brand">
           <span class="brand-icon">◈</span>
@@ -27,12 +27,37 @@
           <button id="btn-new-post" class="btn btn-primary btn-sm">+ New Post</button>
           <button id="btn-logout" class="btn btn-ghost btn-sm">Sign out</button>
         </div>
+        <button id="hamburger" class="hamburger" aria-label="Open menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </nav>
-       
-      <main id="main-content">
-      </main>
 
-       <div id="modal-post" class="modal hidden">
+
+      <div id="mobile-drawer" class="mobile-drawer hidden">
+        <div id="drawer-overlay" class="drawer-overlay"></div>
+        <div class="drawer-panel">
+          <div class="drawer-header">
+            <span class="brand-name">◈ SocialHub</span>
+            <button id="drawer-close" class="modal-close">✕</button>
+          </div>
+          <nav class="drawer-nav">
+            <a href="#" id="drawer-feed" class="drawer-link">Feed</a>
+            <a href="#" id="drawer-profile" class="drawer-link">Profile</a>
+            <a href="#" id="drawer-new-post" class="drawer-link">New Post</a>
+            <a href="#" id="drawer-logout" class="drawer-link drawer-link--danger">Sign out</a>
+          </nav>
+        </div>
+      </div>
+
+      <main id="main-content">
+
+      </main>
+    </div>
+
+
+    <div id="modal-post" class="modal hidden">
       <div class="modal-overlay"></div>
       <div class="modal-box">
         <div class="modal-header">
@@ -63,8 +88,9 @@
         </form>
       </div>
     </div>
-    
-        <div id="modal-comment" class="modal hidden">
+
+
+    <div id="modal-comment" class="modal hidden">
       <div class="modal-overlay"></div>
       <div class="modal-box modal-box--sm">
         <div class="modal-header">
@@ -82,8 +108,9 @@
         </form>
       </div>
     </div>
-    
-    </div>
-    </body>
-    <link rel="javascript" href="src/main.js"/>
+
+    <div id="toast-container"></div>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>
