@@ -61,7 +61,7 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   }
   header.append(av, meta, actionsTop);
 
-  
+
   const title = document.createElement("h3");
   title.className = "post-card__title";
   title.textContent = post.title;
@@ -98,11 +98,49 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
     });
   }
 
-  
+  const footer = document.createElement("div");
+  footer.className = "post-card__footer";
+
+  const reactionBar = buildReactionBar(post, card);
+  footer.append(reactionBar);
+
+
   card.append(header, title);
   if (bodyEl) card.append(bodyEl);
   if (mediaEl) card.append(mediaEl);
   if (tagsEl) card.append(tagsEl);
+  card.append(footer);
 
   return card;
+}
+
+function buildReactionBar(post, card) {
+  const bar = document.createElement("div");
+  bar.className = "reaction-bar";
+
+  const reactMap = {};
+  (post.reactions ?? []).forEach((r) => {
+    reactMap[r.symbol] = r.count;
+  });
+
+  EMOJIS.forEach((emoji) => {
+    const btn = document.createElement("button");
+    btn.className = "reaction-btn";
+    const count = reactMap[emoji] ?? 0;
+    btn.innerHTML = `${emoji} <span class="reaction-count">${count || ""}</span>`;
+    btn.addEventListener("click", async () => {
+      try {
+        await reactToPost(post.id, emoji);
+        const countEl = btn.querySelector(".reaction-count");
+        const prev = parseInt(countEl.textContent || "0", 10);
+        countEl.textContent = prev + 1;
+        btn.classList.add("reacted");
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    });
+    bar.appendChild(btn);
+  });
+
+  return bar;
 }
