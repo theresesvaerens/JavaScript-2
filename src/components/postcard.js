@@ -144,3 +144,24 @@ function buildReactionBar(post, card) {
 
   return bar;
 }
+
+function buildCommentItem(comment) {
+  const item = document.createElement("div");
+  item.className = "comment-item";
+  const av = createAvatar(comment.author?.avatar?.url ?? null, comment.author?.name ?? "?");
+  av.style.width = "28px";
+  av.style.height = "28px";
+  av.style.fontSize = "11px";
+  av.style.flexShrink = "0";
+  const body = document.createElement("div");
+  body.className = "comment-body";
+  const author = document.createElement("div");
+  author.className = "comment-author";
+  author.textContent = `@${comment.author?.name ?? "Unknown"}`;
+  const text = document.createElement("div");
+  text.className = "comment-text";
+  text.textContent = comment.body;
+  body.append(author, text);
+  item.append(av, body);
+  return item;
+}
