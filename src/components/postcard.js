@@ -145,23 +145,59 @@ function buildReactionBar(post, card) {
   return bar;
 }
 
-function buildCommentItem(comment) {
-  const item = document.createElement("div");
-  item.className = "comment-item";
-  const av = createAvatar(comment.author?.avatar?.url ?? null, comment.author?.name ?? "?");
-  av.style.width = "28px";
-  av.style.height = "28px";
-  av.style.fontSize = "11px";
-  av.style.flexShrink = "0";
-  const body = document.createElement("div");
-  body.className = "comment-body";
-  const author = document.createElement("div");
-  author.className = "comment-author";
-  author.textContent = `@${comment.author?.name ?? "Unknown"}`;
-  const text = document.createElement("div");
-  text.className = "comment-text";
-  text.textContent = comment.body;
-  body.append(author, text);
-  item.append(av, body);
-  return item;
+function buildCommentsSection(comments, postId, card) {
+  const section = document.createElement("div");
+  section.className = "comments-section";
+
+  const title = document.createElement("h4");
+  title.textContent = "Comments";
+  section.appendChild(title);
+
+  const commentsList = document.createElement("div");
+  commentsList.className = "comments-list";
+
+  comments.forEach((c) => {
+    commentsList.appendChild(buildCommentItem(c));
+  });
+
+  if (!comments.length) {
+    const empty = document.createElement("p");
+    empty.style.cssText = "font-size:13px;color:var(--text-3);margin-bottom:10px;";
+    empty.textContent = "No comments yet. Be the first!";
+    commentsList.appendChild(empty);
+  }
+
+  section.appendChild(commentsList);
+
+  const form = document.createElement("form");
+  form.style.cssText = "display:flex;gap:8px;margin-top:8px;";
+  const input = document.createElement("textarea");
+  input.placeholder = "Add a comment…";
+  input.rows = 1;
+  input.style.cssText = "flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-family:inherit;font-size:13px;resize:none;";
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.className = "btn btn-primary btn-sm";
+  submitBtn.textContent = "Post";
+  form.append(input, submitBtn);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const body = input.value.trim();
+    if (!body) return;
+    submitBtn.disabled = true;
+    try {
+      const comment = await commentOnPost(postId, body);
+      commentsList.appendChild(buildCommentItem(comment));
+      input.value = "";
+      const countEl = card.querySelector(".action-btn span");
+      if (countEl) countEl.textContent = parseInt(countEl.textContent || "0") + 1;
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+    submitBtn.disabled = false;
+  });
+
+  section.appendChild(form);
+  return section;
 }
