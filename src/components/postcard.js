@@ -36,9 +36,31 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
 
   const actionsTop = document.createElement("div");
   actionsTop.className = "post-card__actions-top";
+  if (isOwner) {
+    const editBtn = document.createElement("button");
+    editBtn.className = "btn btn-ghost btn-xs";
+    editBtn.textContent = "Edit";
+    editBtn.addEventListener("click", () => onEdit(post));
 
+    const delBtn = document.createElement("button");
+    delBtn.className = "btn btn-danger btn-xs";
+    delBtn.textContent = "Delete";
+    delBtn.addEventListener("click", async () => {
+      if (!confirm("Delete this post?")) return;
+      try {
+        await deletePost(post.id);
+        card.remove();
+        showToast("Post deleted.");
+        onDelete(post.id);
+      } catch (err) {
+        showToast(err.message, "error");
+      }
+    });
+    actionsTop.append(editBtn, delBtn);
+  }
   header.append(av, meta, actionsTop);
-  card.appendChild(header);
+
+  card.append(header);
+
   return card;
 }
-
