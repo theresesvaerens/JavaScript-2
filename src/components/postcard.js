@@ -61,7 +61,7 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   }
   header.append(av, meta, actionsTop);
 
-
+  
   const title = document.createElement("h3");
   title.className = "post-card__title";
   title.textContent = post.title;
