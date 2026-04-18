@@ -20,6 +20,7 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   const authorName = post.author?.name ?? "Unknown";
   const authorAvatar = post.author?.avatar?.url ?? null;
 
+  
   const header = document.createElement("div");
   header.className = "post-card__header";
   const av = createAvatar(authorAvatar, authorName);
@@ -60,7 +61,48 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   }
   header.append(av, meta, actionsTop);
 
-  card.append(header);
+  
+  const title = document.createElement("h3");
+  title.className = "post-card__title";
+  title.textContent = post.title;
+
+  
+  let bodyEl = null;
+  if (post.body) {
+    bodyEl = document.createElement("p");
+    bodyEl.className = "post-card__body";
+    bodyEl.textContent = post.body;
+  }
+
+  
+  let mediaEl = null;
+  if (post.media?.url) {
+    mediaEl = document.createElement("img");
+    mediaEl.className = "post-card__media";
+    mediaEl.src = post.media.url;
+    mediaEl.alt = post.media.alt ?? "";
+    mediaEl.onerror = () => mediaEl.remove();
+  }
+
+  
+  let tagsEl = null;
+  if (post.tags?.length) {
+    tagsEl = document.createElement("div");
+    tagsEl.className = "post-card__tags";
+    post.tags.forEach((tag) => {
+      if (!tag) return;
+      const span = document.createElement("span");
+      span.className = "tag";
+      span.textContent = `#${tag}`;
+      tagsEl.appendChild(span);
+    });
+  }
+
+  
+  card.append(header, title);
+  if (bodyEl) card.append(bodyEl);
+  if (mediaEl) card.append(mediaEl);
+  if (tagsEl) card.append(tagsEl);
 
   return card;
 }
