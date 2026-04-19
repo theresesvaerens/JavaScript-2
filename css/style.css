@@ -183,3 +183,109 @@ textarea:focus {
   justify-content: flex-end;
   gap: 10px;
 }
+
+
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid #e0dfd8;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 6px;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+.hamburger span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #1a1916;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.mobile-drawer.hidden {
+  display: none;
+}
+
+.mobile-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+}
+.drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(2px);
+}
+.drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 260px;
+  background: #ffffff;
+  border-left: 1px solid #e0dfd8;
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.22s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e0dfd8;
+  font-weight: 800;
+  font-size: 16px;
+}
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+}
+.drawer-link {
+  display: block;
+  padding: 14px 24px;
+  text-decoration: none;
+  color: #1a1916;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 0.15s;
+  border-left: 3px solid transparent;
+}
+.drawer-link:hover {
+  background: #f0efe9;
+  border-left-color: #1a1916;
+}
+.drawer-link--danger {
+  color: #c0392b;
+  margin-top: 8px;
+}
+.drawer-link--danger:hover {
+  background: #fef2f0;
+  border-left-color: #c0392b;
+}
+
+
+@media (max-width: 600px) {
+  .navbar { padding: 0 14px; gap: 8px; }
+  .nav-links { display: none; }
+  .nav-actions { display: none; }
+  .hamburger { display: flex; }
+  .auth-card { padding: 32px 20px; }
+  .profile-stats { flex-wrap: wrap; gap: 12px; }
+}
