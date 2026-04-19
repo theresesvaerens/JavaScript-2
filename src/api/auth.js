@@ -55,6 +55,6 @@ export async function login(data) {
   const keyJson = await keyResult.json();
   const apiKey = keyJson?.data?.key ?? "";
 
-  saveAuth(accessToken, apiKey, result);
+  saveAuth({ token: accessToken, apiKey, user: result.data ?? result });
   return result;
 }

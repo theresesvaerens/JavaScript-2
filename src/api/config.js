@@ -12,6 +12,7 @@ export const ENDPOINTS = {
     login: `${API_BASE}/auth/login`,
     posts: `${SOCIAL_BASE}/posts`,
     profiles: `${SOCIAL_BASE}/profiles`,
+    apiKey:   `${API_BASE}/auth/create-api-key`,
     };
 
     export function getToken() { 
