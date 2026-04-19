@@ -20,7 +20,7 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   const authorName = post.author?.name ?? "Unknown";
   const authorAvatar = post.author?.avatar?.url ?? null;
 
-  
+
   const header = document.createElement("div");
   header.className = "post-card__header";
   const av = createAvatar(authorAvatar, authorName);
@@ -102,7 +102,13 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   footer.className = "post-card__footer";
 
   const reactionBar = buildReactionBar(post, card);
-  footer.append(reactionBar);
+  const commentBtn = document.createElement("button");
+  commentBtn.className = "action-btn";
+  const commentCount = post.comments?.length ?? post._count?.comments ?? 0;
+  commentBtn.innerHTML = `💬 <span>${commentCount}</span>`;
+  commentBtn.addEventListener("click", () => toggleCommentSection(card, post));
+
+  footer.append(reactionBar, commentBtn);
 
 
   card.append(header, title);
@@ -110,6 +116,10 @@ export function createPostCard(post, onEdit, onDelete, onProfileClick) {
   if (mediaEl) card.append(mediaEl);
   if (tagsEl) card.append(tagsEl);
   card.append(footer);
+
+  if (post.comments?.length) {
+    card.append(buildCommentsSection(post.comments, post.id, card));
+  }
 
   return card;
 }
@@ -144,6 +154,18 @@ function buildReactionBar(post, card) {
 
   return bar;
 }
+
+
+function toggleCommentSection(card, post) {
+  let section = card.querySelector(".comments-section");
+  if (section) {
+    section.remove();
+    return;
+  }
+  section = buildCommentsSection(post.comments ?? [], post.id, card);
+  card.appendChild(section);
+}
+
 
 function buildCommentsSection(comments, postId, card) {
   const section = document.createElement("div");
@@ -200,4 +222,25 @@ function buildCommentsSection(comments, postId, card) {
 
   section.appendChild(form);
   return section;
+}
+
+function buildCommentItem(comment) {
+  const item = document.createElement("div");
+  item.className = "comment-item";
+  const av = createAvatar(comment.author?.avatar?.url ?? null, comment.author?.name ?? "?");
+  av.style.width = "28px";
+  av.style.height = "28px";
+  av.style.fontSize = "11px";
+  av.style.flexShrink = "0";
+  const body = document.createElement("div");
+  body.className = "comment-body";
+  const author = document.createElement("div");
+  author.className = "comment-author";
+  author.textContent = `@${comment.author?.name ?? "Unknown"}`;
+  const text = document.createElement("div");
+  text.className = "comment-text";
+  text.textContent = comment.body;
+  body.append(author, text);
+  item.append(av, body);
+  return item;
 }
